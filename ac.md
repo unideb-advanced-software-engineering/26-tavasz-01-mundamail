@@ -27,7 +27,15 @@ description: "Az azonosított architekturális karakterisztikák."
 -
 
 **Miért fontos?**
-- Kimagasló fontossággal bír a rendszer által kezelt adatokat Zamunda területén belül kell tárolni, valamint a rendszert Zamunda területén belül kell üzemeltetni valamint a felhasználók emailjeit titkosítva kell tárolni.
+- A felhasználók emailjeit titkosítva kell tárolni.
+
+## Adat lokalizáció
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- Kimagasló fontossággal bír a rendszer által kezelt adatokat Zamunda területén belül kell tárolni, üzemeltetni
 
 ## Robusztusság
 
