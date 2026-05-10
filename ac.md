@@ -68,3 +68,75 @@ description: "Az azonosított architekturális karakterisztikák."
 
 **Miért fontos?**
 - A leveleket a felhasználó által kezdeményezett explicit törlésig meg kell őrizni, ami azt jelenti, hogy potenciálisan örökké tárolni kell őket.
+
+## Auditálhatóság
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- A hivatalos kommunikáció során (pl. határidős felszólítások) jogi alapfeltétel, hogy az állami szervek hitelt érdemlően, megváltoztathatatlan módon tudják bizonyítani egy adott levél sikeres kézbesítését, megnyitását vagy törlését.
+
+## Efficient
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- ZDR program kifejezett célkitűzése a költséghatékony és klímabarát működés. A szerverparknak a lehető legkevesebb hardveres erőforrást (CPU, memória) kell pazarolnia, minimalizálva az ökológiai lábnyomot.
+
+## Availability
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- A 10 millió lakos mindennapi élete, valamint az állami szolgáltatások (felsőoktatás, egészségügy) működése is erre a rendszerre támaszkodik. Egy esetleges leállás szó szerint megbéníthatja az országot
+
+## Fault tolerance
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- Rendszer-újraindulás vagy hálózati komponensek meghibásodása esetén is garantálni kell, hogy a kiküldés alatt lévő vagy úton lévő hivatalos levelek nem vesznek el az éterben.
+
+## Usability
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- Ahhoz, hogy az állampolgárok önként és szívesen használják a MundaMailt a mindennapi magánlevelezésükre is, ahhoz valós, letisztult és vonzó alternatívát kell kínálnia a nagy profitorientált szolgáltatókkal szemben.
+
+## Functional completeness
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- Egy levelezőrendszer csak akkor tekinthető versenyképes, "valós alternatívának", ha maradéktalanul teljesíti a modern email-kliensektől elvárt alapfunkciókat, például a szabványos IMAP/SMTP protokollok támogatását és a spamek kezelését.
+
+## Operability
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- Egy 10 millió állampolgárt és a teljes államigazgatást (egészségügy, felsőoktatás, nyugdíj) kiszolgáló nemzeti infrastruktúra esetében nem elég, ha a szoftver fejlesztői környezetben hibátlanul működik. Az állami IT-csapatnak képesnek kell lennie azt élesben, leállások nélkül fenntartani, frissíteni és felügyelni.
+
+## Suitability 
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- Meg kell hogy feleljen mind a céges, mind az állami szektor igényeinek és ezen felül a felhasználók igényeit is kielégitség, hogy megfelelő alternatíva legyen. Ahhoz, hogy valós alternatíva legyen a piacon a többi levelezési rendszerhez képest
+
+## Reliability 
+
+**Mit jelent?**
+- 
+
+**Miért fontos?**
+- Mivel a MundaMail egy országos szintű állami alapinfrastruktúra, a megbízhatóság a rendszer alapköve. 10 millió állampolgár hivatalos és személyes kommunikációja függ a szoftver folyamatos és hibamentes működésétől.
