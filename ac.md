@@ -29,6 +29,14 @@ description: "Az azonosított architekturális karakterisztikák."
 **Miért fontos?**
 - A rendszer a mindennapi levelezés mellett olyan érzékeny állami információkat is kezel, mint az egészségügyi értesítők vagy a nyugdíjjal kapcsolatos ügyek. Ezeket erős titkosítással kell védeni az illetéktelen hozzáféréstől vagy adatszivárgástól.
 
+## Confidentiality
+
+**Mit jelent?**
+- https://quality.arc42.org/qualities/confidentiality
+
+**Miért fontos?**
+- A rendszernek biztosítania kell, hogy a privát és akár kényes levelezéshez és annak adataihoz, csak az arra felhatalmazott, megfelelő személy fér hozzá. 
+
 ## Adat lokalizáció
 
 **Mit jelent?**
