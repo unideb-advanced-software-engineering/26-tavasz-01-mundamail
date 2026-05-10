@@ -27,7 +27,7 @@ description: "Az azonosított architekturális karakterisztikák."
 -
 
 **Miért fontos?**
-- A felhasználók emailjeit titkosítva kell tárolni.
+- A rendszer a mindennapi levelezés mellett olyan érzékeny állami információkat is kezel, mint az egészségügyi értesítők vagy a nyugdíjjal kapcsolatos ügyek. Ezeket erős titkosítással kell védeni az illetéktelen hozzáféréstől vagy adatszivárgástól.
 
 ## Adat lokalizáció
 
@@ -76,6 +76,14 @@ description: "Az azonosított architekturális karakterisztikák."
 
 **Miért fontos?**
 - A hivatalos kommunikáció során (pl. határidős felszólítások) jogi alapfeltétel, hogy az állami szervek hitelt érdemlően, megváltoztathatatlan módon tudják bizonyítani egy adott levél sikeres kézbesítését, megnyitását vagy törlését.
+
+## Governability
+
+**Mit jelent?**
+-
+
+**Miért fontos?**
+- Az államigazgatás számára elengedhetetlen a felhasználók biztonságos, központi regisztrációja, valamint a különböző csatlakozó hivatalok API hozzáféréseinek és jogosultságainak menedzselése.
 
 ## Efficient
 
