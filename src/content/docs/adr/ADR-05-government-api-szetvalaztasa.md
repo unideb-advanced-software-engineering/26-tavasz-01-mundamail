@@ -1,3 +1,8 @@
+---
+title: "ADR-05: A Government API Szolgáltatás Szétválasztása az Email Core-tól"
+description: "Döntés egy önálló Government API Service komponens kialakítása mellett, amely elkülöníti a hivatal-kezdeményezett tömeges üzenetküldést az állampolgári interaktív levelezéstől, és előkészíti a jövőbeli vállalkozói API bővítést."
+---
+
 # ADR-05: A Government API Szolgáltatás Szétválasztása az Email Core-tól
 
 **Státusz:** Elfogadva  

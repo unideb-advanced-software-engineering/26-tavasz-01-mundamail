@@ -1,3 +1,8 @@
+---
+title: "ADR-02: Adatlokalizáció és Titkosítás"
+description: "Döntés az on-premise zamundai üzemeltetés, az AES-256 at-rest titkosítás és a helyi kulcskezelő rendszer (KMS) alkalmazása mellett, a digitális szuverenitás és az adatvédelmi követelmények teljesítése érdekében."
+---
+
 # ADR-02: Adatlokalizáció és Titkosítás – On-premise üzemeltetés, AES-256 at-rest encryption
 
 **Státusz:** Elfogadva  

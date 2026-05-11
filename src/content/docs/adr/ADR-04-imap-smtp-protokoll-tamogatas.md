@@ -1,3 +1,8 @@
+---
+title: "ADR-04: Szabványos IMAP és SMTP Protokollok Támogatása"
+description: "Döntés a nyílt IMAP/SMTP szabványok teljes körű implementációja mellett, egyedi protokoll helyett, a széles klienskompatibilitás és az instabil hálózati körülmények kezelése érdekében."
+---
+
 # ADR-04: Szabványos IMAP és SMTP Protokollok Támogatása – Nyílt szabványok az egyedi protokoll helyett
 
 **Státusz:** Elfogadva  

@@ -1,3 +1,8 @@
+---
+title: "ADR-03: Különálló, Módosíthatatlan Auditnapló"
+description: "Döntés egy önálló, append-only Audit Log alrendszer kialakítása mellett, amely jogi bizonyítékként is felhasználható naplókat tárol az állami levelek megnyitási és törlési eseményeiről."
+---
+
 # ADR-03: Különálló, Módosíthatatlan Auditnapló – Append-only Audit Log alrendszer
 
 **Státusz:** Elfogadva  

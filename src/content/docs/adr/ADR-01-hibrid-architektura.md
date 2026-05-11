@@ -1,3 +1,8 @@
+---
+title: "ADR-01: Hibrid Architektúrális Stílus"
+description: "Döntés az event-driven tömeges küldés és a szinkron request/response olvasás hibrid kombinációja mellett, a két eltérő terhelési minta optimális kiszolgálása érdekében."
+---
+
 # ADR-01: Hibrid Architektúrális Stílus – Event-driven küldés, Request/Response olvasás
 
 **Státusz:** Elfogadva  
