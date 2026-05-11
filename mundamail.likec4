@@ -148,17 +148,17 @@ model {
 }
 
 views {
-  view systemContext {
+  view systemContextDiagram {
     title "System Context – MundaMail"
     include *
   }
 
-  view of mundaMail {
+  view containerDiagram of mundaMail {
     title "Container – MundaMail"
     include *
   }
 
-  view of mainStorage {
+  view storageDiagram of mainStorage {
     title "Adattároló részletezés"
     include *
   }
