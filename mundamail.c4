@@ -1,0 +1,165 @@
+specification {
+  element user {
+    style {
+      shape person
+      color green
+    }
+  }
+
+  element system
+
+  element externalSystem {
+    style {
+      color amber
+    }
+  }
+
+  element frontend {
+    style {
+      shape browser
+    }
+  }
+
+  element mobileFrontend {
+    style {
+      shape mobile
+    }
+  }
+
+  element service {
+    style {
+      color red
+    }
+  }
+
+  element database {
+    style {
+      shape cylinder
+    }
+  }
+
+  element topic {
+    style {
+      shape queue
+    }
+  }
+}
+
+model {
+  citizen = user "Állampolgár" {
+    description '~10 millió zamundai lakos; változó informatikai tudásszint'
+  }
+
+  administrator = user "Ügyintéző / Admin" {
+    description 'Zamundai közigazgatási ügyintéző; postafiókokat regisztrál és kezel'
+  }
+
+  stateOffice = externalSystem "Állami Hivatal" {
+    description 'Egészségügy, nyugdíj, oktatás stb.; REST API-n keresztül küld üzeneteket'
+  }
+
+  imapSmtpClient = externalSystem "Email Kliens" {
+    description 'IMAP/SMTP-kompatibilis asztali vagy harmadik féltől származó kliens (pl. Thunderbird, Outlook)'
+  }
+
+  mundaMail = system "MundaMail" {
+
+    webFrontend = frontend "Webes Felület" {
+      description 'Böngészőalapú levelezőfelület az állampolgároknak (HTTPS)'
+    }
+
+    mobileApp = mobileFrontend "Mobil Alkalmazás" {
+      description 'iOS és Android natív alkalmazás az állampolgároknak'
+    }
+
+    adminFrontend = frontend "Admin Felület" {
+      description 'Webes adminisztrációs felület az ügyintézőknek; új postafiók regisztrálása, fiókok kezelése'
+    }
+
+    apiGateway = service "API Gateway" {
+      description 'Autentikáció (JWT), rate limiting, HTTPS-terminálás, routing a backend szolgáltatások felé'
+    }
+
+    emailCoreService = service "Email Core Service" {
+      description 'IMAP és SMTP protokollok kezelése; levelek fogadása, tárolása, kézbesítése; korlátlan megőrzés'
+      this -> mailboxStore "leveleket olvas és ír (titkosítva)"
+      this -> userDatabase "felhasználói hitelesítés és fiókadatok"
+    }
+
+    govApiService = service "Government API Service" {
+      description 'REST API állami hivatalok számára; személyre szabott és tömeges üzenetek fogadása, sablonba illesztése, sorba állítása'
+      this -> sendingQueue "üzeneteket sorba állít"
+      this -> auditLogStore "kampány-metaadatok naplózása"
+    }
+
+    trackingService = service "Tracking & Audit Service" {
+      description 'Tracking pixel kiszolgálása; levelek megnyitásának és törlésének rögzítése; API a státuszok lekérdezéséhez'
+      this -> auditLogStore "eseményeket naplóz (append-only)"
+    }
+
+    sendingQueue = topic "Sending Queue" {
+      description 'Perzisztens, aszinkron üzenetsor a tömeges és egyedi kézbesítéshez (pl. Kafka / RabbitMQ); újraindulás esetén sem veszik el levél'
+      this -> emailCoreService "üzeneteket továbbít feldolgozásra"
+    }
+
+    mainStorage = database "Adattároló" {
+
+      mailboxStore = database "Mailbox Store" {
+        description 'Titkosítva (AES-256 server-side encryption) tárolt email tartalmak és mellékletek; felhasználói törlésig korlátlan megőrzés'
+        style {
+          icon tech:postgresql
+        }
+      }
+
+      auditLogStore = database "Audit Log" {
+        description 'Módosíthatatlan (append-only) naplók az üzenetek megnyitásáról, törléséről és a kézbesítési státuszokról; jogi megfelelőséghez'
+        style {
+          icon tech:postgresql
+        }
+      }
+
+      userDatabase = database "User Database" {
+        description 'Állampolgári fiókok, email-cím kiosztás (@mundamail.zm), jelszó hash-ek (bcrypt/Argon2), 2FA státusz'
+        style {
+          icon tech:postgresql
+        }
+      }
+    }
+
+  }
+
+  // ── Felhasználók és a rendszer kapcsolatai ──────────────────────────────
+  citizen -> webFrontend "levelez (HTTPS)"
+  citizen -> mobileApp "levelez"
+  citizen -> imapSmtpClient "IMAP/SMTP kliensen keresztül levelez"
+  administrator -> adminFrontend "postafiókokat kezel"
+  stateOffice -> govApiService "üzeneteket küld (REST API, API kulcs)"
+  imapSmtpClient -> emailCoreService "IMAP / SMTP"
+
+  // ── Frontend → Gateway ──────────────────────────────────────────────────
+  webFrontend -> apiGateway "HTTPS / REST"
+  mobileApp -> apiGateway "HTTPS / REST"
+  adminFrontend -> apiGateway "HTTPS / REST"
+
+  // ── Gateway → Szolgáltatások ────────────────────────────────────────────
+  apiGateway -> emailCoreService "levelezési műveletek"
+  apiGateway -> trackingService "tracking státuszok lekérdezése"
+  apiGateway -> govApiService "állami API hívások"
+}
+
+views {
+  view systemContext {
+    title "System Context – MundaMail"
+    include *
+  }
+
+  view of mundaMail {
+    title "Container – MundaMail"
+    include *
+  }
+
+  view of mainStorage {
+    title "Adattároló részletezés"
+    include *
+  }
+}
