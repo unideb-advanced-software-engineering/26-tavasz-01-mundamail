@@ -1,3 +1,8 @@
+---
+title: "01: MundaMail"
+description: "A MundaMail projekt esettanulmánya: Zamunda ingyenes, állami emailszolgáltatása, amely biztonságos postafiókot biztosít minden állampolgárnak, és az állami kommunikáció digitális csatornájaként is szolgál."
+---
+
 # 01: MundaMail 
 
 ## Háttér
