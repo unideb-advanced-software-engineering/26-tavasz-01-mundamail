@@ -25,8 +25,6 @@ description: "A felhasználói jelszavak biztonságos tárolásához használt k
 
 ## a következő mellett döntöttünk:
 
-**Különálló, append-only Audit Log alrendszert** hozunk létre, amely fizikailag és logikailag elkülönül a Mailbox Store-tól és a User Database-től:
-
 - az Argon2id memory-hard password hashing algoritmus használata
 
 ---
