@@ -5,7 +5,7 @@ description: "A választott architekturális stílus leírása."
 
 A projekthez választott architekturális stílusok az alábbiak:
 - Event-driven architecture.
-- Service Based architecture.
+- Space Based architecture.
 
 ## Miért két stílus?
 
@@ -37,16 +37,16 @@ Nem szabad elfelejteni azonban az alábbiakat:
 - A hibakezelés összetetté válik, mivel az aszinkron események sorrendisége és a végleges konzisztencia megnehezíti a garantált szinkron válaszok adását a kliensek felé
 - A fejlesztői csapatoknak fel kell készülniük a holtpontok és a versenyhelyzetek elkerülésére.
 
-## Miért Service Based architecture?
+## Miért Space Based architecture?
 
 ### Illeszkedés
 
-Ezt a stílust a Felhasználói Postafiók Kezelő és Adminisztrációs alrendszerhez alkalmazzuk, ahol nincsenek extrém, hirtelen terhelési ugrások, viszont kritikus az adatintegritás (Data Consistency), az alacsonyabb összköltség (Overall Cost) és a karbantarthatóság (Maintainability).
+Ezt a stílust a Felhasználói Postafiók Kezelő és Adminisztrációs alrendszerhez alkalmazzuk, ahol a 10 millió állampolgár egyidejű, interaktív postafiók-hozzáférése extrém párhuzamos terhelést jelent az adatrétegen, és az adatbázis mint szűk keresztmetszet elleni védekezés architekturális prioritás.
 
-- Az SBA pragmatikus elosztottsága elegendő a napi 10 milliós stabil felhasználói bázis kiszolgálására, anélkül, hogy a mikroszolgáltatások irreális hálózati overheadjét vagy a Kubernetes klaszterek pazarló erőforrásigényét rászabadítaná a ZDR programra.
-- A durvaszemcsés szolgáltatások és a logikailag particionált (de fizikailag esetleg közös) adatbázisok lehetővé teszik a klasszikus ACID tranzakciókat az adatbázisszinten. Ez kritikus fontosságú, amikor a felhasználók mappákat mozgatnak vagy leveleket törölnek, biztosítva az elvárt szinkron adatintegritást.
-- Kevesebb a szolgáltatások közötti hálózati ugrás, így a magas késleltetésű zamundai hálózatok ellenére a REST API válaszidők stabilabban tarthatók a p90 < 500ms tartományban (NF-PER-01).
+- Az **in-memory data grid (IMDG)** megszünteti az adatbázis-lekérdezéseket a kritikus olvasási útvonalról: az aktív postaládák adatai memóriában élnek, így a levelek listázása és a mappakezelés szub-milliszekundumos válaszidőn valósul meg. Ez az egyetlen módja az NF-PER-01 követelmény (p90 < 500 ms) teljesítésének 10 milliós felhasználói bázis mellett, a magas zamundai hálózati késleltetés ellenére is.
+- A **Processing Unit-ok (PU)** az állampolgárok partíciói szerint skálázhatók horizontálisan: minden PU a felhasználók egy szeletét kezeli, így a terhelés lineárisan elosztható, és egy-egy PU meghibásodása nem érinti a többi partíciót.
+- A **Data Pump + Data Writer réteg** aszinkron módon szinkronizálja a memóriában végzett módosításokat a perzisztens Mailbox Store-ra, garantálva az adattartósságot (F-MAIL-02) anélkül, hogy szinkron adatbázis-írás lassítaná az interaktív műveletek válaszidejét.
 
 ### Kompromisszumok
 
-Az SBA nem remekel a rugalmasság terén, így ha a jövőben a felhasználói felület is hirtelen terhelési csúcsokat kapna, a durvaszemcsés szolgáltatások együttes skálázása nehézkes és erőforráspazarló lehet. Emellett, ahogy a rendszer funkciói bővülnek, az evolúciós képesség korlátai miatt kihívást jelenthet a monolitikusabb jellegű szolgáltatások módosítása.
+A Space Based architektúra erőforrásigényes: az aktív postaládák in-memory replikációja magas memóriafoglalást és magasabb infrastrukturális költséget jelent, amit a ZDR program takarékossági elvei ellenében el kell fogadni. Az in-memory data grid konzisztenciájának kezelése (cache invalidáció, replikáció) jelentős üzemeltetési komplexitást hoz, és a fejlesztőcsapat mélyebb ismereteket igényel az IMDG technológiákhoz (pl. Hazelcast, Apache Ignite).

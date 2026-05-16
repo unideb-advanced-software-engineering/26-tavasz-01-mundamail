@@ -1,9 +1,9 @@
 =======
 title: "ADR-01: Hibrid Architektúrális Stílus"
-description: "Döntés az Event-driven Architecture (EDA) tömeges küldéshez és a Service Based Architecture (SBA) interaktív levelezéshez hibrid kombinációja mellett, a két eltérő alrendszer eltérő minőségi követelményeinek optimális kiszolgálása érdekében."
+description: "Döntés az Event-driven Architecture (EDA) tömeges küldéshez és a Space Based Architecture (SBA) interaktív levelezéshez hibrid kombinációja mellett, a két eltérő alrendszer eltérő minőségi követelményeinek optimális kiszolgálása érdekében."
 ---
 
-# ADR-01: Hibrid Architektúrális Stílus – Event-driven Architecture (EDA) és Service Based Architecture (SBA)
+# ADR-01: Hibrid Architektúrális Stílus – Event-driven Architecture (EDA) és Space Based Architecture (SBA)
 
 **Státusz:** Elfogadva  
 **Dátum:** 2026-05-10  
@@ -32,7 +32,7 @@ Szembesülve azzal, hogy:
 
 - egyetlen architekturális stílus, például tisztán Monolit vagy tisztán Mikroszolgáltatások választását
 
-- **Tisztán szinkron monolith (egyetlen egységes backend):** Egyszerűbb fejleszteni és üzemeltetni, de a tömeges kiküldés pillanatában a teljes rendszer válaszképtelenné válna. Egy 1 millió leveles kampány szinkron indítása akkora terhelési csúcsot generálna, amelyet nem lenne gazdaságosan kivédhető kapacitástartalékkal kezelni. Az SBA durvaszemcsés, de mégis elkülönített szolgáltatásai rugalmasabb skálázást tesznek lehetővé.
+- **Tisztán szinkron monolith (egyetlen egységes backend):** Egyszerűbb fejleszteni és üzemeltetni, de a tömeges kiküldés pillanatában a teljes rendszer válaszképtelenné válna. Egy 1 millió leveles kampány szinkron indítása akkora terhelési csúcsot generálna, amelyet nem lenne gazdaságosan kivédhető kapacitástartalékkal kezelni. Az SBA Processing Unit-alapú horizontális skálázása és in-memory data grid-je ezzel szemben az adatbázis mint szűk keresztmetszet kiküszöbölésével lineáris skálázhatóságot tesz lehetővé.
 
 - **Tisztán Event-driven Architecture (EDA) minden műveletre (CQRS-sel):** Maximális dekupling és rugalmasság, de az IMAP/SMTP protokoll természeténél fogva szinkron – a levelezőkliens szinkron kapcsolatban vár a szerverre. Az olvasási műveletek eseményvezéreltté tétele mesterséges bonyolultságot hozna, inkompatibilis lenne a szabványos email protokollokkal, és feladná az adatbázisszintű ACID tranzakciókat, amelyek az adatintegritáshoz kritikusak.
 
@@ -40,7 +40,7 @@ Szembesülve azzal, hogy:
 
 ## SBA&EDA
 
-- **Service Based Architecture (SBA)** az interaktív levelezési és adminisztrációs műveleteknél: durvaszemcsés szolgáltatások (Email Core Service, User Management) IMAP/SMTP protokoll-kiszolgálással, frontend ↔ API Gateway ↔ Email Core Service kommunikáció, logikailag particionált, közös adatbázissal. Az adatbázisszintű ACID tranzakciók és a kevesebb hálózati ugrás biztosítják a válaszidőre vonatkozó NF-PER-01 követelmény (p90 < 500 ms) teljesíthetőségét.
+- **Space Based Architecture (SBA)** az interaktív levelezési és adminisztrációs műveleteknél: Processing Unit-ok in-memory data grid-del (IMDG) kezelik az aktív postaládákat, az adatbázis-lekérdezések elkerülésével teljesítve az NF-PER-01 követelményt (p90 < 500 ms). A Data Pump aszinkron módon szinkronizál a perzisztens Mailbox Store-ra, garantálva az adattartósságot (F-MAIL-02). A felhasználói partíciók szerint horizontálisan skálázható Processing Unit-ok kezelik a frontend ↔ API Gateway ↔ Email Core Service forgalmat.
 
 - **Event-driven Architecture (EDA)** a tömeges és kormányzati üzenetek teljes küldési folyamatánál: a Government API Service a bejövő kampányt egyből egy perzisztens üzenetsorba (Sending Queue) helyezi, HTTP 202 Accepted választ ad, majd a háttérben az Email Core Service dolgozza fel a sorból az üzeneteket.
 ---
